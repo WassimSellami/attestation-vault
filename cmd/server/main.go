@@ -25,6 +25,8 @@ func main() {
 	})
 
 	svc := secret.New(masterKey, engine, verifier)
+	svc.Store("stripe-key", "sk_top_secret_value")
+
 	h := &httpapi.Handlers{Nonces: nonces, Secrets: svc}
 
 	go func() {
