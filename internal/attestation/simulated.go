@@ -9,10 +9,10 @@ import (
 )
 
 type SimulatedVerifier struct {
-	nonceStore *nonceStore
+	nonceStore *NonceStore
 }
 
-func NewSimulatedVerifier(nonceStore *nonceStore) *SimulatedVerifier {
+func NewSimulatedVerifier(nonceStore *NonceStore) *SimulatedVerifier {
 	return &SimulatedVerifier{nonceStore: nonceStore}
 }
 

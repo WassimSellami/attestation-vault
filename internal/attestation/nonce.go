@@ -9,20 +9,20 @@ import (
 	"time"
 )
 
-type nonceStore struct {
+type NonceStore struct {
 	mu     sync.Mutex
 	issued map[string]time.Time
 	ttl    time.Duration
 }
 
-func NewNonceStore(ttl time.Duration) *nonceStore {
-	return &nonceStore{
+func NewNonceStore(ttl time.Duration) *NonceStore {
+	return &NonceStore{
 		issued: make(map[string]time.Time),
 		ttl:    ttl,
 	}
 }
 
-func (s *nonceStore) Issue() (string, error) {
+func (s *NonceStore) Issue() (string, error) {
 	buf := make([]byte, 32)
 	if _, err := io.ReadFull(rand.Reader, buf); err != nil {
 		return "", fmt.Errorf("generate nonce: %w", err)
@@ -36,7 +36,7 @@ func (s *nonceStore) Issue() (string, error) {
 	return nonce, nil
 }
 
-func (s *nonceStore) Consume(nonce string) error {
+func (s *NonceStore) Consume(nonce string) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
@@ -52,7 +52,7 @@ func (s *nonceStore) Consume(nonce string) error {
 	return nil
 }
 
-func (s *nonceStore) Cleanup() {
+func (s *NonceStore) Cleanup() {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	now := time.Now()
